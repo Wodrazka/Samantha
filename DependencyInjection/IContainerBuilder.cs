@@ -18,14 +18,14 @@ namespace DependencyInjection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        IRegistration RegisterSingleton<T>(T singleton);
+        ISingleRegistration RegisterSingleton<T>(T singleton);
 
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        IRegistration Register<T>();
+        ISingleRegistration Register<T>();
 
         /// <summary>
         /// 
@@ -38,7 +38,7 @@ namespace DependencyInjection
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        IRegistrationCollection RegisterAssemplyTypes(Assembly assembly);
+        ICollectionRegistration RegisterAssemplyTypes(Assembly assembly);
 
 
     }

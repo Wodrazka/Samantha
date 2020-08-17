@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DependencyInjection.Registation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace DependencyInjection
 {
-    public abstract class Registration : IRegistration
+    public abstract class Registration : ISingleRegistration
     {
 
         public RegistrationSettings RegistrationSettings { get; set; }
@@ -19,19 +20,19 @@ namespace DependencyInjection
             AsTypes = new List<Type>();
         }
 
-        public IRegistration AsSelf()
+        public ISingleRegistration AsSelf()
         {
             AsTypes.Add(ConstructionType);
             return this;
         }
 
-        public IRegistration As<T>()
+        public ISingleRegistration As<T>()
         {
             AsTypes.Add(typeof(T));
             return this;
         }
 
-        public IRegistration As(params Type[] types)
+        public ISingleRegistration As(params Type[] types)
         {
             foreach (var type in types)
                 AsTypes.Add(type);
@@ -39,18 +40,18 @@ namespace DependencyInjection
             return this;
         }
 
-        public IRegistration AsImplementedInterfaces()
+        public ISingleRegistration AsImplementedInterfaces()
         {
             return this.As(ConstructionType.GetInterfaces());
         }
 
-        public IRegistration PerRequest()
+        public ISingleRegistration PerRequest()
         {
             RegistrationSettings.Scope = Scope.PerRequest;
             return this;
         }
 
-        public IRegistration Single()
+        public ISingleRegistration Single()
         {
             RegistrationSettings.Scope = Scope.Instance;
             return this;

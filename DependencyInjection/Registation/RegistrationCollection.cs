@@ -4,33 +4,33 @@ using System.Text;
 
 namespace DependencyInjection.Registation
 {
-    public class RegistrationCollection : IRegistrationCollection
+    public class RegistrationCollection : ICollectionRegistration
     {
 
-        private List<IRegistration> _registrations;
+        private List<ISingleRegistration> _registrations;
 
         public RegistrationCollection()
         {
-            _registrations = new List<IRegistration>();
+            _registrations = new List<ISingleRegistration>();
         }
 
-        public void Add(IRegistration registration)
+        public void Add(ISingleRegistration registration)
         {
             _registrations.Add(registration);
         }
 
-        public IEnumerable<IRegistration> GetRegistrations()
+        public IEnumerable<ISingleRegistration> GetRegistrations()
         {
             return _registrations;
         }
 
-        public IRegistrationCollection Where(Func<IRegistration, bool> predicate)
+        public ICollectionRegistration Where(Func<ISingleRegistration, bool> predicate)
         {
             _registrations.RemoveAll(e => !predicate(e));
             return this;
         }
 
-        public IRegistrationCollection AsImplementedInterfaces()
+        public ICollectionRegistration AsImplementedInterfaces()
         {
             foreach (var reg in _registrations)
                 reg.AsImplementedInterfaces();
@@ -38,7 +38,7 @@ namespace DependencyInjection.Registation
             return this;
         }
 
-        public IRegistrationCollection Single()
+        public ICollectionRegistration Single()
         {
             foreach (var reg in _registrations)
                 reg.Single();

@@ -12,14 +12,12 @@ namespace DependencyInjection
     {
 
         private List<IRegistration> _registrations;
-        private List<IRegistrationCollection> _registrationCollections;
 
         private bool _shouldRegisterSelf = false;
 
         public ContainerBuilder()
         {
             _registrations = new List<IRegistration>();
-            _registrationCollections = new List<IRegistrationCollection>();
         }
 
         public IContainer Build()
@@ -27,7 +25,6 @@ namespace DependencyInjection
             Container container = new Container();
 
             BuildRegisrations(container);
-            BuildCollections(container);
 
             if (_shouldRegisterSelf)
                 container.AddBinding(typeof(IContainer), new SingletonBinding(container));
@@ -41,45 +38,15 @@ namespace DependencyInjection
             {
                 IBinding binding = null;
 
-                switch (reg)
+                if (reg is ISingleRegistration single)
                 {
-                    case DynamicRegistration dynamicRegistration:
-                        binding = new DynamicBinding()
-                        {
-                            ConstructionType = reg.ConstructionType,
-                            Scope = reg.RegistrationSettings.Scope
-                        };
-                        break;
-                    case SingletonRegistration singleton:
-                        binding = new SingletonBinding(singleton.Value);
-                        break;
-                }
-
-                if (reg.AsTypes.Count == 0)
-                    container.AddBinding(reg.ConstructionType, binding);
-
-                foreach (var type in reg.AsTypes)
-                {
-                    container.AddBinding(type, binding);
-                }
-            }
-        }
-
-        private void BuildCollections(Container container)
-        {
-            foreach(var col in _registrationCollections)
-            {
-                foreach (var reg in ((RegistrationCollection)col).GetRegistrations())
-                {
-                    IBinding binding = null;
-
-                    switch (reg)
+                    switch (single)
                     {
                         case DynamicRegistration dynamicRegistration:
                             binding = new DynamicBinding()
                             {
-                                ConstructionType = reg.ConstructionType,
-                                Scope = reg.RegistrationSettings.Scope
+                                ConstructionType = dynamicRegistration.ConstructionType,
+                                Scope = dynamicRegistration.RegistrationSettings.Scope
                             };
                             break;
                         case SingletonRegistration singleton:
@@ -87,12 +54,39 @@ namespace DependencyInjection
                             break;
                     }
 
-                    if (reg.AsTypes.Count == 0)
-                        container.AddBinding(reg.ConstructionType, binding);
+                    if (single.AsTypes.Count == 0)
+                        container.AddBinding(single.ConstructionType, binding);
 
-                    foreach (var type in reg.AsTypes)
+                    foreach (var type in single.AsTypes)
                     {
                         container.AddBinding(type, binding);
+                    }
+                }
+                else if (reg is ICollectionRegistration collection)
+                {
+                    foreach (var colRegistration in ((RegistrationCollection)collection).GetRegistrations())
+                    {
+                        switch (colRegistration)
+                        {
+                            case DynamicRegistration dynamicRegistration:
+                                binding = new DynamicBinding()
+                                {
+                                    ConstructionType = dynamicRegistration.ConstructionType,
+                                    Scope = dynamicRegistration.RegistrationSettings.Scope
+                                };
+                                break;
+                            case SingletonRegistration singleton:
+                                binding = new SingletonBinding(singleton.Value);
+                                break;
+                        }
+
+                        if (colRegistration.AsTypes.Count == 0)
+                            container.AddBinding(colRegistration.ConstructionType, binding);
+
+                        foreach (var type in colRegistration.AsTypes)
+                        {
+                            container.AddBinding(type, binding);
+                        }
                     }
                 }
             }
@@ -103,9 +97,9 @@ namespace DependencyInjection
             _shouldRegisterSelf = true;
         }
 
-        public IRegistration Register<T>()
+        public ISingleRegistration Register<T>()
         {
-            IRegistration registration = new DynamicRegistration()
+            ISingleRegistration registration = new DynamicRegistration()
             {
                 RegistrationSettings = new RegistrationSettings()
                 {
@@ -119,9 +113,9 @@ namespace DependencyInjection
             return registration;
         }
 
-        public IRegistration RegisterSingleton<T>(T singleton)
+        public ISingleRegistration RegisterSingleton<T>(T singleton)
         {
-            IRegistration registration = new SingletonRegistration()
+            ISingleRegistration registration = new SingletonRegistration()
             {
                 RegistrationSettings = new RegistrationSettings()
                 {
@@ -136,9 +130,9 @@ namespace DependencyInjection
             return registration;
         }
 
-        public IRegistrationCollection RegisterAssemplyTypes(Assembly assembly)
+        public ICollectionRegistration RegisterAssemplyTypes(Assembly assembly)
         {
-            IRegistrationCollection result = new RegistrationCollection();
+            ICollectionRegistration result = new RegistrationCollection();
 
             foreach(var t in assembly.GetTypes().Where(t => t.IsClass))
             {
@@ -152,7 +146,7 @@ namespace DependencyInjection
                 });
             }
 
-            _registrationCollections.Add(result);
+            _registrations.Add(result);
             return result;
         }
     }
