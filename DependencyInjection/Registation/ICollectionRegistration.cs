@@ -1,8 +1,8 @@
-﻿using DependencyInjection.Registation;
+﻿using Samantha.Registation;
 using System;
 using System.Collections.Generic;
 
-namespace DependencyInjection
+namespace Samantha
 {
     public interface ICollectionRegistration : IRegistration
     {

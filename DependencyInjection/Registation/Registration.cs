@@ -1,10 +1,10 @@
-﻿using DependencyInjection.Registation;
+﻿using Samantha.Registation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DependencyInjection
+namespace Samantha
 {
     public abstract class Registration : ISingleRegistration
     {

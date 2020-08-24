@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DependencyInjection.Test.Classes
+namespace Samantha.Test.Classes
 {
     public class Person
     {

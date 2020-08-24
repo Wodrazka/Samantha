@@ -1,10 +1,10 @@
-﻿using DependencyInjection.Registation;
+﻿using Samantha.Registation;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace DependencyInjection
+namespace Samantha
 {
     public interface IContainerBuilder
     {

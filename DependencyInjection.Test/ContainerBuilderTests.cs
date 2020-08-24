@@ -1,7 +1,7 @@
-﻿using DependencyInjection.Test.Classes;
+﻿using Samantha.Test.Classes;
 using Xunit;
 
-namespace DependencyInjection.Test
+namespace Samantha.Test
 {
     public class ContainerBuilderTests
     {

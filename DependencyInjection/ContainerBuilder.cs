@@ -1,12 +1,12 @@
-﻿using DependencyInjection.Binding;
-using DependencyInjection.Registation;
+﻿using Samantha.Binding;
+using Samantha.Registation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DependencyInjection
+namespace Samantha
 {
     public class ContainerBuilder : IContainerBuilder
     {

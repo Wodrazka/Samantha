@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DependencyInjection.Binding
+namespace Samantha.Binding
 {
     public class SingletonBinding : IBinding
     {

@@ -1,10 +1,10 @@
-﻿using DependencyInjection.Binding;
+﻿using Samantha.Binding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DependencyInjection
+namespace Samantha
 {
     public class Container : IContainer
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DependencyInjection
+namespace Samantha
 { 
 
     public interface IRegistration

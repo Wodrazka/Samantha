@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DependencyInjection.Binding
+namespace Samantha.Binding
 {
     public class DynamicBinding : IBinding
     {
