@@ -1,4 +1,5 @@
 ﻿using Samantha.Test.Classes;
+using Samantha.Test.Interfaces;
 using Xunit;
 
 namespace Samantha.Test
@@ -49,13 +50,13 @@ namespace Samantha.Test
         }
 
         [Fact]
-        public void TypeRegistrationPerContainer()
+        public void TypeRegistrationPerInstance()
         {
             var cb = new ContainerBuilder();
             Person p1 = null;
             Person p2 = null;
 
-            cb.Register<Person>().AsSelf().Single();
+            cb.Register<Person>().AsSelf().PerInstance();
             var container = cb.Build();
 
             try
@@ -92,6 +93,29 @@ namespace Samantha.Test
             }
 
             Assert.True(p1?.Name != p2.Name);
+        }
+
+        [Fact]
+        public void TypeAsImplementedInterfaces()
+        {
+            var cb = new ContainerBuilder();
+            IPerson p1 = null;
+            IPerson p2 = null;
+
+            cb.Register<Person>().AsImplementedInterfaces();
+            var container = cb.Build();
+
+            try
+            {
+                p1 = container.Resolve<IPerson>();
+                p2 = container.Resolve<Person>();
+            }
+            catch
+            {
+
+            }
+
+            Assert.True(p1 != null && p2 == null);
         }
     }
 }

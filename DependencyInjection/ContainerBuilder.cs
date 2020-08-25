@@ -27,66 +27,47 @@ namespace Samantha
             BuildRegisrations(container);
 
             if (_shouldRegisterSelf)
-                container.AddBinding(typeof(IContainer), new SingletonBinding(container));
+                container.AddBinding(typeof(IContainer), new FunctionBinding(container) 
+                { 
+                    ConstructionType = typeof(IContainer),
+                    Scope = Scope.Instance,
+                    Function = (c,t) => container
+                });
 
             return container;
+        }
+
+        private void BuildRegistration(Container container, ISingleRegistration registration)
+        {
+            IBinding binding = new FunctionBinding(container)
+            {
+                Function = registration.Function,
+                Scope = registration.RegistrationSettings.Scope,
+                ConstructionType = registration.ConstructionType
+            };
+
+            if (registration.AsTypes.Count == 0)
+                container.AddBinding(registration.ConstructionType, binding);
+
+            foreach (var type in registration.AsTypes)
+            {
+                container.AddBinding(type, binding);
+            }
         }
 
         private void BuildRegisrations(Container container)
         {
             foreach (var reg in _registrations)
             {
-                IBinding binding = null;
-
                 if (reg is ISingleRegistration single)
                 {
-                    switch (single)
-                    {
-                        case DynamicRegistration dynamicRegistration:
-                            binding = new DynamicBinding()
-                            {
-                                ConstructionType = dynamicRegistration.ConstructionType,
-                                Scope = dynamicRegistration.RegistrationSettings.Scope
-                            };
-                            break;
-                        case SingletonRegistration singleton:
-                            binding = new SingletonBinding(singleton.Value);
-                            break;
-                    }
-
-                    if (single.AsTypes.Count == 0)
-                        container.AddBinding(single.ConstructionType, binding);
-
-                    foreach (var type in single.AsTypes)
-                    {
-                        container.AddBinding(type, binding);
-                    }
+                    BuildRegistration(container, single);
                 }
                 else if (reg is ICollectionRegistration collection)
                 {
                     foreach (var colRegistration in ((RegistrationCollection)collection).GetRegistrations())
                     {
-                        switch (colRegistration)
-                        {
-                            case DynamicRegistration dynamicRegistration:
-                                binding = new DynamicBinding()
-                                {
-                                    ConstructionType = dynamicRegistration.ConstructionType,
-                                    Scope = dynamicRegistration.RegistrationSettings.Scope
-                                };
-                                break;
-                            case SingletonRegistration singleton:
-                                binding = new SingletonBinding(singleton.Value);
-                                break;
-                        }
-
-                        if (colRegistration.AsTypes.Count == 0)
-                            container.AddBinding(colRegistration.ConstructionType, binding);
-
-                        foreach (var type in colRegistration.AsTypes)
-                        {
-                            container.AddBinding(type, binding);
-                        }
+                        BuildRegistration(container, colRegistration);
                     }
                 }
             }
@@ -99,13 +80,48 @@ namespace Samantha
 
         public ISingleRegistration Register<T>()
         {
-            ISingleRegistration registration = new DynamicRegistration()
+            ISingleRegistration registration = new Registration()
             {
                 RegistrationSettings = new RegistrationSettings()
                 {
                     Scope = Scope.PerRequest,
                 },
-                ConstructionType = typeof(T)
+                ConstructionType = typeof(T),
+                Function = (c,t) => Functions.Create(c, t)
+            };
+
+            _registrations.Add(registration);
+
+            return registration;
+        }
+
+        public ISingleRegistration Register(Type type)
+        {
+            ISingleRegistration registration = new Registration()
+            {
+                RegistrationSettings = new RegistrationSettings()
+                {
+                    Scope = Scope.PerRequest,
+                },
+                ConstructionType = type,
+                Function = (c, t) => Functions.Create(c, t)
+            };
+
+            _registrations.Add(registration);
+
+            return registration;
+        }
+
+        public ISingleRegistration Register<T>(Func<IContainer, Type, object> func)
+        {
+            ISingleRegistration registration = new Registration()
+            {
+                RegistrationSettings = new RegistrationSettings()
+                {
+                    Scope = Scope.PerRequest,
+                },
+                ConstructionType = typeof(T),
+                Function = func
             };
 
             _registrations.Add(registration);
@@ -115,14 +131,14 @@ namespace Samantha
 
         public ISingleRegistration RegisterSingleton<T>(T singleton)
         {
-            ISingleRegistration registration = new SingletonRegistration()
+            ISingleRegistration registration = new Registration()
             {
                 RegistrationSettings = new RegistrationSettings()
                 {
-                    
+                    Scope = Scope.Instance
                 },
                 ConstructionType = typeof(T),
-                Value = singleton
+                Function = (c, t) => singleton
             };
 
             _registrations.Add(registration);
@@ -134,15 +150,16 @@ namespace Samantha
         {
             ICollectionRegistration result = new RegistrationCollection();
 
-            foreach(var t in assembly.GetTypes().Where(t => t.IsClass))
+            foreach(var type in assembly.GetTypes().Where(t => t.IsClass))
             {
-                result.Add(new DynamicRegistration()
+                result.Add(new Registration()
                 {
                     RegistrationSettings = new RegistrationSettings()
                     {
                         Scope = Scope.PerRequest,
                     },
-                    ConstructionType = t
+                    ConstructionType = type,
+                    Function = (c, t) => Functions.Create(c, t)
                 });
             }
 

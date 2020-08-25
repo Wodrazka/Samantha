@@ -12,6 +12,8 @@ namespace Samantha.Registation
 
         Type ConstructionType { get; }
 
+        Func<IContainer, Type, object> Function { get; set; }
+
         ISingleRegistration AsSelf();
 
         ISingleRegistration As<T>();
@@ -22,6 +24,6 @@ namespace Samantha.Registation
 
         ISingleRegistration PerRequest();
 
-        ISingleRegistration Single();
+        ISingleRegistration PerInstance();
     }
 }

@@ -18,15 +18,6 @@ namespace Samantha
 
         internal void AddBinding(Type type, IBinding binding)
         {
-            if (binding is DynamicBinding db)
-                db.GetBinding = t =>
-                {
-                    if (!_bindings.ContainsKey(t))
-                        throw new Exception("Type don't exists");
-
-                    return _bindings[t].Last().Get();
-                };
-
             if (_bindings.ContainsKey(type))
                 _bindings[type].Add(binding);
             else

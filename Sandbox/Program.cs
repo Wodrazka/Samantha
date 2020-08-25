@@ -10,6 +10,13 @@ namespace Sandbox
         {
             ContainerBuilder containerBuilder = new ContainerBuilder();
 
+            containerBuilder.Register<string>((c, t) => "Test");
+
+            containerBuilder.Register<User>((c, t) => new User()
+            {
+                Name = c.Resolve<string>()
+            }).As<IUser>();
+
             containerBuilder.Register<ItemData>();
             containerBuilder.Register<UserData>();
 

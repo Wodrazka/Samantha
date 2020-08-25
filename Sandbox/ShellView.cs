@@ -13,6 +13,10 @@ namespace Sandbox
         public ShellView(IContainer container, UserView userView)
         {
             container.Resolve<ItemData>().GetItems();
+            Console.WriteLine(container.Resolve<UserData>().GetNickname());
+            Console.WriteLine(container.Resolve<UserData>().GetNickname());
+            Console.WriteLine(container.Resolve<UserData>().GetNickname());
+            Console.WriteLine(container.Resolve<UserData>().GetNickname());
             _userView = userView;
         }
 

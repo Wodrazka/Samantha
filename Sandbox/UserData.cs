@@ -6,20 +6,23 @@ namespace Sandbox
 {
     public class UserData
     {
-        int randomValue;
-        public UserData()
+        int _randomValue;
+        IUser _user;
+
+        public UserData(IUser user)
         {
-            randomValue = (int)((new Random()).NextDouble() * 100);
+            _user = user;
+            _randomValue = (int)((new Random()).NextDouble() * 100);
         }
 
-        public string GetUserName()
+        public string GetUsername()
         {
-            return "Julian";
+            return _user.Name;
         }
 
         public string GetNickname()
         {
-            return "Granerkbrand" + randomValue;
+            return "Granerkbrand" + _randomValue;
         }
 
     }

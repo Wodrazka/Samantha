@@ -16,7 +16,7 @@ namespace Sandbox
 
         public void Start()
         {
-            Console.WriteLine(_userData.GetNickname());
+            Console.WriteLine(_userData.GetUsername());
         }
 
     }

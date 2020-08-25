@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Samantha.Test.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Samantha.Test.Classes
 {
-    public class Person
+    public class Person : IPerson
     {
 
         public string Name { get; set; }

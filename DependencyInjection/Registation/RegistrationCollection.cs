@@ -41,7 +41,7 @@ namespace Samantha.Registation
         public ICollectionRegistration Single()
         {
             foreach (var reg in _registrations)
-                reg.Single();
+                reg.PerInstance();
 
             return this;
         }

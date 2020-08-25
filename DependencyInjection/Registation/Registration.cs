@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Samantha
 {
-    public abstract class Registration : ISingleRegistration
+    public class Registration : ISingleRegistration
     {
 
         public RegistrationSettings RegistrationSettings { get; set; }
@@ -14,6 +14,8 @@ namespace Samantha
         public List<Type> AsTypes { get; internal set; }
 
         public Type ConstructionType { get; internal set; }
+
+        public Func<IContainer, Type, object> Function { get; set; }
 
         public Registration()
         {
@@ -51,7 +53,7 @@ namespace Samantha
             return this;
         }
 
-        public ISingleRegistration Single()
+        public ISingleRegistration PerInstance()
         {
             RegistrationSettings.Scope = Scope.Instance;
             return this;
