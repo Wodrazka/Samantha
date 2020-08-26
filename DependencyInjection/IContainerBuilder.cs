@@ -30,6 +30,14 @@ namespace Samantha
         /// <summary>
         /// 
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        ISingleRegistration Register<T>(Func<IContainer, Type, object> func);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         void RegisterSelf();
 

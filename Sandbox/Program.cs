@@ -8,9 +8,9 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            ContainerBuilder containerBuilder = new ContainerBuilder();
+            IContainerBuilder containerBuilder = new ContainerBuilder();
 
-            containerBuilder.Register<string>((c, t) => "Test");
+            containerBuilder.Register<string>((c, t) => "TeseT");
 
             containerBuilder.Register<User>((c, t) => new User()
             {
