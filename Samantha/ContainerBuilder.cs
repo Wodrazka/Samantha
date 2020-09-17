@@ -11,13 +11,13 @@ namespace Samantha
     public class ContainerBuilder : IContainerBuilder
     {
 
-        private readonly ConcurrentBag<IRegistration> _registrations;
+        private readonly List<IRegistration> _registrations;
 
         private bool _shouldRegisterSelf = false;
 
         public ContainerBuilder()
         {
-            _registrations = new ConcurrentBag<IRegistration>();
+            _registrations = new List<IRegistration>();
         }
 
         public IContainer Build()

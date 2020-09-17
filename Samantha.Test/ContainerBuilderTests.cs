@@ -1,5 +1,8 @@
 ﻿using Samantha.Test.Classes;
 using Samantha.Test.Interfaces;
+using System;
+using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace Samantha.Test
@@ -116,6 +119,59 @@ namespace Samantha.Test
             }
 
             Assert.True(p1 != null && p2 == null);
+        }
+
+        [Fact]
+        public void RegisterAssemblies()
+        {
+            var cb = new ContainerBuilder();
+
+            cb.RegisterAssemplyTypes(Assembly.GetExecutingAssembly());
+
+            var container = cb.Build();
+
+            foreach(var t in Assembly.GetExecutingAssembly().GetTypes().Where(e => e.IsClass))
+            {
+                object obj = null;
+
+                try
+                {
+                    obj = container.Resolve(t);
+                }
+                catch (Exception)
+                {
+                    
+                }
+
+                Assert.NotNull(obj);
+            }
+        }
+
+        [Fact]
+        public void RegisterAssembliesExcept()
+        {
+            var cb = new ContainerBuilder();
+
+            cb.RegisterAssemplyTypes(Assembly.GetExecutingAssembly())
+                .Except<Car>();
+
+            var container = cb.Build();
+
+            foreach (var t in Assembly.GetExecutingAssembly().GetTypes().Where(e => e.IsClass && e != typeof(Car)))
+            {
+                object obj = null;
+
+                try
+                {
+                    obj = container.Resolve(t);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                Assert.NotNull(obj);
+            }
         }
     }
 }

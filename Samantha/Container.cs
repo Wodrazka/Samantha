@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Samantha
@@ -7,16 +8,16 @@ namespace Samantha
     internal class Container : IContainer
     {
 
-        private readonly ConcurrentDictionary<Type, ConcurrentBag<IBinding>> _bindings;
+        private readonly ConcurrentDictionary<Type, List<IBinding>> _bindings;
 
         internal Container()
         {
-            _bindings = new ConcurrentDictionary<Type, ConcurrentBag<IBinding>>();
+            _bindings = new ConcurrentDictionary<Type, List<IBinding>>();
         }
 
         internal void AddBinding(Type type, IBinding binding)
         {
-            var typeBinding = _bindings.GetOrAdd(type, new ConcurrentBag<IBinding>());
+            var typeBinding = _bindings.GetOrAdd(type, new List<IBinding>());
             typeBinding.Add(binding);
         }
 
@@ -27,7 +28,7 @@ namespace Samantha
 
         public object Resolve(Type type)
         {
-            if (_bindings.TryGetValue(type, out ConcurrentBag<IBinding> bindings))
+            if (_bindings.TryGetValue(type, out List<IBinding> bindings))
             {
                 return bindings.Last().Get();
             }

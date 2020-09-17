@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samantha", "DependencyInjection\Samantha.csproj", "{64162533-7BFE-409B-A178-F1961887CDE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samantha", "Samantha\Samantha.csproj", "{64162533-7BFE-409B-A178-F1961887CDE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samantha.Test", "DependencyInjection.Test\Samantha.Test.csproj", "{5AAEA58A-9622-46FF-B4FD-EFF05C4FBF10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samantha.Test", "Samantha.Test\Samantha.Test.csproj", "{5AAEA58A-9622-46FF-B4FD-EFF05C4FBF10}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{49FF753D-0714-41E2-B2DF-DAD916D210A3}"
 EndProject

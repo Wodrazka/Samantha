@@ -13,5 +13,9 @@ namespace Samantha
         ICollectionRegistration AsImplementedInterfaces();
 
         ICollectionRegistration Single();
+
+        ICollectionRegistration Except<T>();
+
+        ICollectionRegistration Except<T>(Action<IRegistration> except);
     }
 }

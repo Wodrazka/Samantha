@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,6 +43,22 @@ namespace Samantha.Registation
         {
             foreach (var reg in _registrations)
                 reg.PerInstance();
+
+            return this;
+        }
+
+        public ICollectionRegistration Except<T>()
+        {
+            var registration = _registrations.Find(r => r.ConstructionType == typeof(T));
+            _registrations.Remove(registration);
+
+            return this;
+        }
+
+        public ICollectionRegistration Except<T>(Action<IRegistration> except)
+        {
+            var registration = _registrations.Find(r => r.ConstructionType == typeof(T));
+            except(registration);
 
             return this;
         }
