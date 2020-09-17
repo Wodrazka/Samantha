@@ -1,43 +1,38 @@
-﻿using Samantha.Binding;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
 
 namespace Samantha
 {
-    public class Container : IContainer
+    internal class Container : IContainer
     {
 
-        private Dictionary<Type, List<IBinding>> _bindings;
+        private readonly ConcurrentDictionary<Type, ConcurrentBag<IBinding>> _bindings;
 
-        public Container()
+        internal Container()
         {
-            _bindings = new Dictionary<Type, List<IBinding>>();
+            _bindings = new ConcurrentDictionary<Type, ConcurrentBag<IBinding>>();
         }
 
         internal void AddBinding(Type type, IBinding binding)
         {
-            if (_bindings.ContainsKey(type))
-                _bindings[type].Add(binding);
-            else
-                _bindings.Add(type, new List<IBinding>() { binding });
+            var typeBinding = _bindings.GetOrAdd(type, new ConcurrentBag<IBinding>());
+            typeBinding.Add(binding);
         }
 
         public T Resolve<T>()
         {
-            if (!_bindings.ContainsKey(typeof(T)))
-                throw new Exception("Type don't exists");
-
-            return (T)_bindings[typeof(T)].Last().Get();
+            return (T)Resolve(typeof(T));
         }
 
         public object Resolve(Type type)
         {
-            if (!_bindings.ContainsKey(type))
-                throw new Exception("Type don't exists");
+            if (_bindings.TryGetValue(type, out ConcurrentBag<IBinding> bindings))
+            {
+                return bindings.Last().Get();
+            }
 
-            return _bindings[type].Last().Get();
+            throw new Exception($"Type {type} don't exists");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Sandbox
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             IContainerBuilder containerBuilder = new ContainerBuilder();
 
@@ -15,10 +15,10 @@ namespace Sandbox
             containerBuilder.Register<User>((c, t) => new User()
             {
                 Name = c.Resolve<string>()
-            }).As<IUser>();
+            }).AsImplementedInterfaces();
 
             containerBuilder.Register<ItemData>();
-            containerBuilder.Register<UserData>();
+            containerBuilder.Register<UserData>().PerRequest();
 
             containerBuilder.RegisterAssemplyTypes(Assembly.GetExecutingAssembly())
                 .Where(e => e.ConstructionType.Name.EndsWith("View"));

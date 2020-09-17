@@ -1,23 +1,23 @@
 ﻿using Samantha.Binding;
 using Samantha.Registation;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Samantha
 {
     public class ContainerBuilder : IContainerBuilder
     {
 
-        private List<IRegistration> _registrations;
+        private readonly ConcurrentBag<IRegistration> _registrations;
 
         private bool _shouldRegisterSelf = false;
 
         public ContainerBuilder()
         {
-            _registrations = new List<IRegistration>();
+            _registrations = new ConcurrentBag<IRegistration>();
         }
 
         public IContainer Build()
@@ -27,11 +27,11 @@ namespace Samantha
             BuildRegisrations(container);
 
             if (_shouldRegisterSelf)
-                container.AddBinding(typeof(IContainer), new FunctionBinding(container) 
-                { 
+                container.AddBinding(typeof(IContainer), new FunctionBinding(container)
+                {
                     ConstructionType = typeof(IContainer),
                     Scope = Scope.Instance,
-                    Function = (c,t) => container
+                    Function = (c, t) => container
                 });
 
             return container;
@@ -87,7 +87,7 @@ namespace Samantha
                     Scope = Scope.PerRequest,
                 },
                 ConstructionType = typeof(T),
-                Function = (c,t) => Functions.Create(c, t)
+                Function = (c, t) => Functions.Create(c, t)
             };
 
             _registrations.Add(registration);
@@ -150,7 +150,7 @@ namespace Samantha
         {
             ICollectionRegistration result = new RegistrationCollection();
 
-            foreach(var type in assembly.GetTypes().Where(t => t.IsClass))
+            foreach (var type in assembly.GetTypes().Where(t => t.IsClass))
             {
                 result.Add(new Registration()
                 {
