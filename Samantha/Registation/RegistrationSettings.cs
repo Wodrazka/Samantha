@@ -24,6 +24,8 @@ namespace Samantha
         
         public Scope Scope { get; set; }
 
+        public bool IsGeneric { get; set; }
+
         #endregion
 
         #region Constructors

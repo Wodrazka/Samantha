@@ -20,6 +20,8 @@ namespace Sandbox
             containerBuilder.Register<ItemData>();
             containerBuilder.Register<UserData>().PerRequest();
 
+            containerBuilder.RegisterGeneric(typeof(Generic<>));
+
             containerBuilder.RegisterAssemplyTypes(Assembly.GetExecutingAssembly())
                 .Where(e => e.ConstructionType.Name.EndsWith("View"));
 

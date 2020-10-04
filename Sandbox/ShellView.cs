@@ -10,7 +10,7 @@ namespace Sandbox
 
         private UserView _userView;
 
-        public ShellView(IContainer container, UserView userView)
+        public ShellView(IContainer container, UserView userView, Generic<ShellView> generic)
         {
             container.Resolve<ItemData>().GetItems();
             Console.WriteLine(container.Resolve<UserData>().GetNickname());
@@ -18,11 +18,13 @@ namespace Sandbox
             Console.WriteLine(container.Resolve<UserData>().GetNickname());
             Console.WriteLine(container.Resolve<UserData>().GetNickname());
             _userView = userView;
+
+            Console.WriteLine($"ShellView constructed with: {generic.Type.FullName}");
         }
 
         public void Start()
         {
-            Console.WriteLine("Shell View - Start");
+            Console.WriteLine("ShellView - Start");
             _userView.Start();
         }
 

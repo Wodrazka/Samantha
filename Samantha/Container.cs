@@ -28,9 +28,15 @@ namespace Samantha
 
         public object Resolve(Type type)
         {
-            if (_bindings.TryGetValue(type, out List<IBinding> bindings))
+            Type t = type;
+            if(type.IsGenericType)
             {
-                return bindings.Last().Get();
+                t = type.GetGenericTypeDefinition();
+            }
+
+            if (_bindings.TryGetValue(t, out List<IBinding> bindings))
+            {
+                return bindings.Last().Get(type);
             }
 
             throw new Exception($"Type {type} don't exists");

@@ -21,6 +21,13 @@ namespace Samantha
         ISingleRegistration RegisterSingleton<T>(T singleton);
 
         /// <summary>
+        /// Register a generic type
+        /// </summary>
+        /// <param name="generic"></param>
+        /// <returns></returns>
+        ISingleRegistration RegisterGeneric(Type generic);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>

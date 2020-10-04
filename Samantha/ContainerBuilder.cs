@@ -31,7 +31,7 @@ namespace Samantha
                 {
                     ConstructionType = typeof(IContainer),
                     Scope = Scope.Instance,
-                    Function = (c, t) => container
+                    Function = (c, t) => container,
                 });
 
             return container;
@@ -43,7 +43,8 @@ namespace Samantha
             {
                 Function = registration.Function,
                 Scope = registration.RegistrationSettings.Scope,
-                ConstructionType = registration.ConstructionType
+                ConstructionType = registration.ConstructionType,
+                IsGeneric = registration.RegistrationSettings.IsGeneric
             };
 
             if (registration.AsTypes.Count == 0)
@@ -139,6 +140,24 @@ namespace Samantha
                 },
                 ConstructionType = typeof(T),
                 Function = (c, t) => singleton
+            };
+
+            _registrations.Add(registration);
+
+            return registration;
+        }
+
+        public ISingleRegistration RegisterGeneric(Type generic)
+        {
+            ISingleRegistration registration = new Registration()
+            {
+                RegistrationSettings = new RegistrationSettings()
+                {
+                    Scope = Scope.PerRequest,
+                    IsGeneric = true
+                },
+                ConstructionType = generic,
+                Function = (c, t) => Functions.Create(c, t)
             };
 
             _registrations.Add(registration);
