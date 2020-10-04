@@ -25,12 +25,20 @@ namespace Samantha.Registation
                 {
                     try
                     {
-                        constructedParameters.Add(c.Resolve(p.ParameterType));
+                        object constructedParameter = c.Resolve(p.ParameterType);
+                        constructedParameters.Add(constructedParameter);
                     }
                     catch
                     {
-                        invalid = true;
-                        break;
+                        if (p.HasDefaultValue)
+                        {
+                            constructedParameters.Add(p.DefaultValue);
+                        }
+                        else
+                        {
+                            invalid = true;
+                            break;
+                        }
                     }
                 }
 
