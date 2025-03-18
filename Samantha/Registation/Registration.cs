@@ -1,8 +1,6 @@
-﻿using Samantha.Registation;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Samantha.Registation;
 
 namespace Samantha
 {

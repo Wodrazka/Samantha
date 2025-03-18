@@ -1,10 +1,9 @@
-﻿using Samantha.Binding;
-using Samantha.Registation;
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Samantha.Binding;
+using Samantha.Registation;
 
 namespace Samantha
 {

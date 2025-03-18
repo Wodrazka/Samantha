@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Samantha
-{ 
+﻿namespace Samantha
+{
 
     public interface IRegistration
     {

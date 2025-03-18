@@ -36,7 +36,7 @@ namespace Samantha.Binding
 
                 if (_lastValue == null || Scope == Scope.PerRequest)
                 {
-                        _lastValue = Function(_container, ConstructionType);
+                    _lastValue = Function(_container, ConstructionType);
                 }
 
                 return _lastValue;

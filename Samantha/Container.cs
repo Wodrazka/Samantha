@@ -29,7 +29,7 @@ namespace Samantha
         public object Resolve(Type type)
         {
             Type t = type;
-            if(type.IsGenericType)
+            if (type.IsGenericType)
             {
                 t = type.GetGenericTypeDefinition();
             }

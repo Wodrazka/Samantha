@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Samantha
+﻿namespace Samantha
 {
 
     public enum Scope
@@ -21,7 +15,7 @@ namespace Samantha
         #endregion
 
         #region Properties
-        
+
         public Scope Scope { get; set; }
 
         public bool IsGeneric { get; set; }
