@@ -1,4 +1,4 @@
-﻿namespace Samantha;
+namespace Samantha;
 
 using System;
 using System.Reflection;
@@ -7,7 +7,7 @@ using Samantha.Registation;
 public interface IContainerBuilder
 {
 
-    IContainer Build();
+    public IContainer Build();
 
     /// <summary>
     /// Register type T as Singleton
@@ -16,21 +16,21 @@ public interface IContainerBuilder
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    ISingleRegistration RegisterSingleton<T>(T singleton);
+    public ISingleRegistration RegisterSingleton<T>(T singleton);
 
     /// <summary>
     /// Register a generic type
     /// </summary>
     /// <param name="genericType"></param>
     /// <returns></returns>
-    ISingleRegistration RegisterGeneric(Type genericType);
+    public ISingleRegistration RegisterGeneric(Type genericType);
 
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    ISingleRegistration Register<T>();
+    public ISingleRegistration Register<T>();
 
     /// <summary>
     /// 
@@ -38,20 +38,20 @@ public interface IContainerBuilder
     /// <typeparam name="T"></typeparam>
     /// <param name="func"></param>
     /// <returns></returns>
-    ISingleRegistration Register<T>(Func<IContainer, Type, object> func);
+    public ISingleRegistration Register<T>(Func<IContainer, Type, object> func);
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    void RegisterSelf();
+    public void RegisterSelf();
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="assembly"></param>
     /// <returns></returns>
-    IRegistrationList RegisterAssemplyTypes(Assembly assembly);
+    public IRegistrationList RegisterAssemplyTypes(Assembly assembly);
 
 
 }

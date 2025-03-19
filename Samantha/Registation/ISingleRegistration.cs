@@ -5,23 +5,23 @@ using System.Collections.Generic;
 
 public interface ISingleRegistration : IRegistration
 {
-    RegistrationSettings RegistrationSettings { get; set; }
+    public RegistrationSettings RegistrationSettings { get; set; }
 
-    List<Type> AsTypes { get; }
+    public List<Type> AsTypes { get; }
 
-    Type ConstructionType { get; }
+    public Type ConstructionType { get; }
 
-    Func<IContainer, Type, object> CreateFunction { get; set; }
+    public Func<IContainer, Type, object> CreateFunction { get; set; }
 
-    ISingleRegistration AsSelf();
+    public ISingleRegistration AsSelf();
 
-    ISingleRegistration AsType<T>();
+    public ISingleRegistration AsType<T>();
 
-    ISingleRegistration AsType(params Type[] types);
+    public ISingleRegistration AsType(params Type[] types);
 
-    ISingleRegistration AsImplementedInterfaces();
+    public ISingleRegistration AsImplementedInterfaces();
 
-    ISingleRegistration PerRequest();
+    public ISingleRegistration PerRequest();
 
-    ISingleRegistration PerInstance();
+    public ISingleRegistration PerInstance();
 }

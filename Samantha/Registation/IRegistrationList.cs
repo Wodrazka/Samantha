@@ -5,15 +5,15 @@ using Samantha.Registation;
 
 public interface IRegistrationList : IRegistration
 {
-    void Add(ISingleRegistration registration);
+    public void Add(ISingleRegistration registration);
 
-    IRegistrationList Where(Func<ISingleRegistration, bool> predicate);
+    public IRegistrationList Where(Func<ISingleRegistration, bool> predicate);
 
-    IRegistrationList AsImplementedInterfaces();
+    public IRegistrationList AsImplementedInterfaces();
 
-    IRegistrationList PerInstance();
+    public IRegistrationList PerInstance();
 
-    IRegistrationList Except<T>();
+    public IRegistrationList Except<T>();
 
-    IRegistrationList Except<T>(Action<IRegistration> except);
+    public IRegistrationList Except<T>(Action<IRegistration> except);
 }

@@ -1,9 +1,9 @@
-﻿namespace Samantha;
+namespace Samantha;
 
 using System;
 
 internal interface IBinding
 {
-    object Get();
-    object Get(Type t);
+    public object Get();
+    public object Get(Type t);
 }
