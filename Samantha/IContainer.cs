@@ -1,13 +1,12 @@
-﻿using System;
+﻿namespace Samantha;
 
-namespace Samantha
+using System;
+
+public interface IContainer
 {
-    public interface IContainer
-    {
 
-        T Resolve<T>();
+    T Resolve<T>();
 
-        object Resolve(Type type);
+    object Resolve(Type type);
 
-    }
 }

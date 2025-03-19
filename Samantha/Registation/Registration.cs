@@ -1,60 +1,55 @@
-﻿using System;
+namespace Samantha;
+
+using System;
 using System.Collections.Generic;
 using Samantha.Registation;
 
-namespace Samantha
+public class Registration : ISingleRegistration
 {
-    public class Registration : ISingleRegistration
+
+    public RegistrationSettings RegistrationSettings { get; set; }
+
+    public List<Type> AsTypes { get; internal set; }
+
+    public Type ConstructionType { get; internal set; }
+
+    public Func<IContainer, Type, object> CreateFunction { get; set; }
+
+    public Registration() => AsTypes = [];
+
+    public ISingleRegistration AsSelf()
     {
+        AsTypes.Add(ConstructionType);
+        return this;
+    }
 
-        public RegistrationSettings RegistrationSettings { get; set; }
+    public ISingleRegistration AsType<T>()
+    {
+        AsTypes.Add(typeof(T));
+        return this;
+    }
 
-        public List<Type> AsTypes { get; internal set; }
-
-        public Type ConstructionType { get; internal set; }
-
-        public Func<IContainer, Type, object> Function { get; set; }
-
-        public Registration()
+    public ISingleRegistration AsType(params Type[] types)
+    {
+        foreach (var type in types)
         {
-            AsTypes = new List<Type>();
+            AsTypes.Add(type);
         }
 
-        public ISingleRegistration AsSelf()
-        {
-            AsTypes.Add(ConstructionType);
-            return this;
-        }
+        return this;
+    }
 
-        public ISingleRegistration As<T>()
-        {
-            AsTypes.Add(typeof(T));
-            return this;
-        }
+    public ISingleRegistration AsImplementedInterfaces() => AsType(ConstructionType.GetInterfaces());
 
-        public ISingleRegistration As(params Type[] types)
-        {
-            foreach (var type in types)
-                AsTypes.Add(type);
+    public ISingleRegistration PerRequest()
+    {
+        RegistrationSettings.Scope = Scope.PerRequest;
+        return this;
+    }
 
-            return this;
-        }
-
-        public ISingleRegistration AsImplementedInterfaces()
-        {
-            return this.As(ConstructionType.GetInterfaces());
-        }
-
-        public ISingleRegistration PerRequest()
-        {
-            RegistrationSettings.Scope = Scope.PerRequest;
-            return this;
-        }
-
-        public ISingleRegistration PerInstance()
-        {
-            RegistrationSettings.Scope = Scope.Instance;
-            return this;
-        }
+    public ISingleRegistration PerInstance()
+    {
+        RegistrationSettings.Scope = Scope.Instance;
+        return this;
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace Samantha
+namespace Samantha;
+
+
+public interface IRegistration
 {
 
-    public interface IRegistration
-    {
-
-    }
 }

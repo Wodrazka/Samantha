@@ -1,28 +1,27 @@
-﻿using System;
+namespace Samantha.Registation;
+
+using System;
 using System.Collections.Generic;
 
-namespace Samantha.Registation
+public interface ISingleRegistration : IRegistration
 {
-    public interface ISingleRegistration : IRegistration
-    {
-        RegistrationSettings RegistrationSettings { get; set; }
+    RegistrationSettings RegistrationSettings { get; set; }
 
-        List<Type> AsTypes { get; }
+    List<Type> AsTypes { get; }
 
-        Type ConstructionType { get; }
+    Type ConstructionType { get; }
 
-        Func<IContainer, Type, object> Function { get; set; }
+    Func<IContainer, Type, object> CreateFunction { get; set; }
 
-        ISingleRegistration AsSelf();
+    ISingleRegistration AsSelf();
 
-        ISingleRegistration As<T>();
+    ISingleRegistration AsType<T>();
 
-        ISingleRegistration As(params Type[] types);
+    ISingleRegistration AsType(params Type[] types);
 
-        ISingleRegistration AsImplementedInterfaces();
+    ISingleRegistration AsImplementedInterfaces();
 
-        ISingleRegistration PerRequest();
+    ISingleRegistration PerRequest();
 
-        ISingleRegistration PerInstance();
-    }
+    ISingleRegistration PerInstance();
 }

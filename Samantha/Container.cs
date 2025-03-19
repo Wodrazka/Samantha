@@ -1,45 +1,38 @@
-﻿using System;
+namespace Samantha;
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samantha
+internal sealed class Container : IContainer
 {
-    internal class Container : IContainer
+
+    private readonly ConcurrentDictionary<Type, List<IBinding>> _bindings;
+
+    internal Container() => _bindings = new ConcurrentDictionary<Type, List<IBinding>>();
+
+    internal void AddBinding(Type type, IBinding binding)
     {
+        var typeBinding = _bindings.GetOrAdd(type, []);
+        typeBinding.Add(binding);
+    }
 
-        private readonly ConcurrentDictionary<Type, List<IBinding>> _bindings;
+    public T Resolve<T>() => (T)Resolve(typeof(T));
 
-        internal Container()
+    public object Resolve(Type type)
+    {
+        var t = type;
+        if (type.IsGenericType)
         {
-            _bindings = new ConcurrentDictionary<Type, List<IBinding>>();
+            t = type.GetGenericTypeDefinition();
         }
 
-        internal void AddBinding(Type type, IBinding binding)
+        if (_bindings.TryGetValue(t, out var bindings))
         {
-            var typeBinding = _bindings.GetOrAdd(type, new List<IBinding>());
-            typeBinding.Add(binding);
+            return bindings.Last().Get(type);
         }
 
-        public T Resolve<T>()
-        {
-            return (T)Resolve(typeof(T));
-        }
-
-        public object Resolve(Type type)
-        {
-            Type t = type;
-            if (type.IsGenericType)
-            {
-                t = type.GetGenericTypeDefinition();
-            }
-
-            if (_bindings.TryGetValue(t, out List<IBinding> bindings))
-            {
-                return bindings.Last().Get(type);
-            }
-
-            throw new Exception($"Type {type} don't exists");
-        }
+        throw new InvalidOperationException($"Type {type} doesn't exist.");
     }
 }

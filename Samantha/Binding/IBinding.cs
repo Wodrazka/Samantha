@@ -1,10 +1,9 @@
-﻿using System;
+﻿namespace Samantha;
 
-namespace Samantha
+using System;
+
+internal interface IBinding
 {
-    internal interface IBinding
-    {
-        object Get();
-        object Get(Type t);
-    }
+    object Get();
+    object Get(Type t);
 }
